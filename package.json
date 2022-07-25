@@ -1,0 +1,25 @@
+{
+  "name": "uw-m12-employee",
+  "version": "1.0.0",
+  "description": "Employee management and viewer CMS.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Axeljk/uw_m12_employee.git"
+  },
+  "author": "Axeljk",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Axeljk/uw_m12_employee/issues"
+  },
+  "homepage": "https://github.com/Axeljk/uw_m12_employee#readme",
+  "dependencies": {
+    "console.table": "^0.10.0",
+    "inquirer": "^8.2.4",
+    "mysql2": "^2.3.3"
+  }
+}
