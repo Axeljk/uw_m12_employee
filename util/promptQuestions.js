@@ -1,9 +1,9 @@
 const KEYWORDS = ["View Employees", "Add Employee", "Update Employee Role", "View All Roles", "Add Role", "View All Departments", "Add Department", "Quit"];
 const [KEY_VIEW_EMPL, KEY_ADD_EMPL, KEY_EMPL_ROLE, KEY_VIEW_ROLE, KEY_ADD_ROLE, KEY_VIEW_DEPT, KEY_ADD_DEPT, QUIT] = KEYWORDS;
 
-let EMPL = undefined;
-let ROLE = undefined;
-let DEPT = undefined;
+let EMPL = [];
+let ROLE = [];
+let DEPT = [];
 
 const listEmpl = () => EMPL.map(e => e.first + e.last);
 const listRole = () => ROLE.map(e => e.name);
