@@ -3,6 +3,7 @@ const inquirer = require("inquirer");
 const mySql = require("mysql2");
 const { KEYWORDS, QUESTIONS } = require("./util/promptQuestions");
 const [KEY_VIEW_EMPL, KEY_ADD_EMPL, KEY_EMPL_ROLE, KEY_VIEW_ROLE, KEY_ADD_ROLE, KEY_VIEW_DEPT, KEY_ADD_DEPT, QUIT] = KEYWORDS;
+const db = require("./util/queryUtil");
 
 const employees = [];
 const roles = [];
@@ -29,7 +30,6 @@ function selection() {
 				updateEmployee();
 				break;
 			default:  // Quit
-
 		}
 	});
 }
