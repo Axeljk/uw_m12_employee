@@ -3,21 +3,15 @@ const inquirer = require("inquirer");
 const mySql = require("mysql2");
 const { KEYWORDS, QUESTIONS } = require("./util/promptQuestions");
 const [KEY_VIEW_EMPL, KEY_ADD_EMPL, KEY_EMPL_ROLE, KEY_VIEW_ROLE, KEY_ADD_ROLE, KEY_VIEW_DEPT, KEY_ADD_DEPT, QUIT] = KEYWORDS;
-const db = require("./util/queryUtil");
+const { getDepts, getRoles, query } = require("./util/queryUtil");
 
 const employees = [];
 const roles = [];
 const departments = [];
 
 
-function init() {
-	QUESTIONS.setVars(employees, roles, departments);
-	selection();
-}
-
-function selection() {
-	inquirer
-	.prompt(QUESTIONS.menu)
+async function main() {
+	inquirer.prompt(QUESTIONS.menu)
 	.then(answers => {
 		switch (answers.selection) {
 			case (KEY_VIEW_EMPL):
@@ -29,7 +23,14 @@ function selection() {
 			case (KEY_EMPL_ROLE):
 				updateEmployee();
 				break;
+			case (KEY_ADD_ROLE):
+				addRole();
+				break;
+			case (KEY_VIEW_DEPT):
+				viewDepartments();
+				break;
 			default:  // Quit
+				console.log("Exiting...");
 		}
 	});
 }
@@ -49,7 +50,24 @@ function updateEmployee() {
 	.then(answers => {
 		console.log("DOING THE UPDATE EMPLOYEE THING");
 		main();
-	})
+	});
 }
 
-init();
+function addRole() {
+	inquirer.prompt(QUESTIONS.newRole)
+	.then(answers => {
+		console.log("DOING THE ADD ROLE THING");
+		main();
+	});
+}
+
+async function viewDepartments() {
+	// This is the same as getDepts()...
+	const bob = await query("SELECT name AS `Department Name` FROM departments");
+	let depts = tables.getTable(bob);
+	console.log(depts);
+//	getDepts()
+	main()
+}
+
+main();
