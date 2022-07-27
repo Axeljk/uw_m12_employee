@@ -1,3 +1,5 @@
+const util = require('util');
+const tables = require("console.table");
 const mysql = require('mysql2');
 
 const db = mysql.createConnection({
@@ -7,9 +9,20 @@ const db = mysql.createConnection({
 	database: "company_db"
 });
 
-// simple query
-db.query("SELECT * FROM employees", (err, results, fields) => {
-	console.log(results);
-});
+// node native promisify
+const query = util.promisify(db.query).bind(db);
 
-module.exports = db;
+async function getDepts() {
+	const bob = await query("SELECT * FROM departments");
+	let depts = tables.getTable(bob);
+	console.log(depts);
+}
+
+function getRoles(dept) {
+	if (dept == undefined || typeof dept != "number")
+		return db.query("SELECT * FROM roles");
+	else
+		return db.query(`SELECT title FROM roles WHERE department_id = ${dept}`)
+}
+
+module.exports = { getDepts, getRoles, query };
