@@ -3,19 +3,18 @@ const inquirer = require("inquirer");
 const mySql = require("mysql2");
 const { KEYWORDS, QUESTIONS } = require("./util/promptQuestions");
 const [KEY_VIEW_EMPL, KEY_ADD_EMPL, KEY_EMPL_ROLE, KEY_VIEW_ROLE, KEY_ADD_ROLE, KEY_VIEW_DEPT, KEY_ADD_DEPT, QUIT] = KEYWORDS;
-const { getDepts, getRoles, query } = require("./util/queryUtil");
+const database = require("./util/queryUtil");
 
-const employees = [];
-const roles = [];
-const departments = [];
+function init() {
+	main();
+}
 
-
-async function main() {
+function main() {
 	inquirer.prompt(QUESTIONS.menu)
 	.then(answers => {
 		switch (answers.selection) {
 			case (KEY_VIEW_EMPL):
-				console.log(KEY_VIEW_EMPL);
+				viewEmployees();
 				break;
 			case (KEY_ADD_EMPL):
 				addEmployee();
@@ -26,13 +25,25 @@ async function main() {
 			case (KEY_ADD_ROLE):
 				addRole();
 				break;
+			case (KEY_VIEW_ROLE):
+				viewRoles();
+				break;
 			case (KEY_VIEW_DEPT):
 				viewDepartments();
 				break;
 			default:  // Quit
 				console.log("Exiting...");
+				process.exit(0);
+				break;
 		}
 	});
+}
+
+function viewEmployees() {
+	database.getEmpls()
+	.then(table => "\n" + tables.getTable(table).slice(0, -1))
+	.then(console.log)
+	.then(main);
 }
 
 function addEmployee() {
@@ -61,13 +72,25 @@ function addRole() {
 	});
 }
 
-async function viewDepartments() {
-	// This is the same as getDepts()...
-	const bob = await query("SELECT name AS `Department Name` FROM departments");
-	let depts = tables.getTable(bob);
-	console.log(depts);
-//	getDepts()
-	main()
+/*function viewTable(t) {
+	database.getTable(t)
+	.then(table => "\n" + tables.getTable(table).slice(0, -1))
+	.then(console.log)
+	.then(main);
+}*/
+
+async function viewRoles() {
+	database.getRoles()
+	.then(table => "\n" + tables.getTable(table).slice(0, -1))
+	.then(console.log)
+	.then(main);
 }
 
-main();
+async function viewDepartments() {
+	database.getDepts()
+	.then(table => "\n" + tables.getTable(table).slice(0, -1))
+	.then(console.log)
+	.then(main);
+}
+
+init();
