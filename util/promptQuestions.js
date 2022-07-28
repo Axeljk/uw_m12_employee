@@ -1,6 +1,6 @@
 const KEYWORDS = ["View Employees", "Add Employee", "Update Employee Role", "View All Roles", "Add Role", "View All Departments", "Add Department", "Quit"];
 const [KEY_VIEW_EMPL, KEY_ADD_EMPL, KEY_EMPL_ROLE, KEY_VIEW_ROLE, KEY_ADD_ROLE, KEY_VIEW_DEPT, KEY_ADD_DEPT, QUIT] = KEYWORDS;
-const { getDepts, getRoles, query } = require("./queryUtil");
+const database = require("./queryUtil");
 
 const QUESTIONS = {
 	menu: [{
@@ -38,25 +38,25 @@ const QUESTIONS = {
 	{
 		type: "list",
 		message: "Employee's role:",
-		choices: () => query("SELECT title AS name FROM roles"),
+		choices: database.getRoles,
 		name: "emplRole"
 	},
 	{
 		type: "list",
 		message: "Employee's manager:",
-		choices: () => query("SELECT first_name AS name FROM employees"),
+		choices: database.getEmployees,
 		name: "emplMan"
 	}],
 	updateEmpl: [{
 		type: "list",
 		message: "Update which employee:",
-		choices: () => query("SELECT first_name AS name FROM employees"),
+		choices: database.getEmployees,
 		name: "updateName"
 	},
 	{
 		type: "list",
 		message: "Employee's new role:",
-		choices: () => query("SELECT title AS name FROM roles"),
+		choices: database.getRoles,
 		name: "updateRole"
 	}],
 	newRole: [{
@@ -73,7 +73,7 @@ const QUESTIONS = {
 	{
 		type: "list",
 		message: "Department of role:",
-		choices: () => query("SELECT * FROM departments"),
+		choices: database.getDepts,
 		name: "roleDept"
 	}],
 	newDept: [{
