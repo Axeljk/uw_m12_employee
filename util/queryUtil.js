@@ -13,25 +13,47 @@ const db = mysql.createConnection({
 const query = util.promisify(db.query).bind(db);
 
 const database = {
-	getDepts: () => query("SELECT id AS ID, name AS Name FROM departments"),
+	getDepts: () => query("SELECT * FROM departments"),
 	getRoles: () => query("SELECT \
-							roles.id AS ID, \
-							title AS Title, \
-							name as Department, \
-							LPAD(CONCAT(\"$\", FORMAT(salary, 2)), 13, \" \") as Salary \
-							FROM roles \
-							INNER JOIN departments ON department_id = departments.id"),
-	getEmpls: () => query("Select \
-							E1.id AS ID, \
-							CONCAT(E1.first_name, \" \", E1.last_name) AS Name, \
-							title AS Title, \
-							name AS Department, \
-							LPAD(CONCAT(\"$\", FORMAT(salary, 2)), 13, \" \") as Salary, \
-							IFNULL(CONCAT(E2.first_name, \" \", E2.last_name), \"NULL\") AS Manager \
-							FROM employees E1 \
-							LEFT JOIN employees E2 ON E1.manager_id = E2.id \
-							INNER JOIN roles ON E1.role_id = roles.id \
-							INNER JOIN departments ON department_id = departments.id")
+		roles.id, \
+		title AS name, \
+		departments.name AS department, \
+		salary \
+		FROM roles JOIN departments ON department_id = departments.id \
+		ORDER BY departments.name ASC, title ASC"),
+	getEmpls: () => query("SELECT \
+		E1.id, \
+		CONCAT(E1.last_name, \", \", E1.first_name) AS name, \
+		title, \
+		departments.name AS department, \
+		salary, \
+		IFNULL(CONCAT(E2.last_name, \", \", E2.first_name), \"NULL\") AS manager \
+		FROM employees E1 \
+		LEFT JOIN employees E2 ON E1.manager_id = E2.id \
+		INNER JOIN roles ON E1.role_id = roles.id \
+		INNER JOIN departments ON department_id = departments.id \
+		ORDER BY E1.last_name ASC"),
+	displayDepts: () => query("SELECT id AS ID, name AS Name FROM departments"),
+	displayRoles: () => query("SELECT \
+		roles.id AS ID, \
+		title AS Title, \
+		name as Department, \
+		LPAD(CONCAT(\"$\", FORMAT(salary, 0)), MAX(LENGTH(salary) - 1) OVER (), \" \") as Salary \
+		FROM roles \
+		INNER JOIN departments ON department_id = departments.id \
+		ORDER BY name ASC, salary ASC"),
+	displayEmpls: () => query("Select \
+		E1.id AS ID, \
+		CONCAT(E1.first_name, \" \", E1.last_name) AS Name, \
+		title AS Title, \
+		name AS Department, \
+		LPAD(CONCAT(\"$\", FORMAT(salary, 0)), MAX(LENGTH(salary) - 1) OVER (), \" \") as Salary, \
+		IFNULL(CONCAT(E2.first_name, \" \", E2.last_name), \"NULL\") AS Manager \
+		FROM employees E1 \
+		LEFT JOIN employees E2 ON E1.manager_id = E2.id \
+		INNER JOIN roles ON E1.role_id = roles.id \
+		INNER JOIN departments ON department_id = departments.id \
+		ORDER BY departments.name ASC, E1.last_name ASC")
 }
 
 module.exports = database;
