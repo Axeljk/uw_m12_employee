@@ -1,6 +1,7 @@
 const database = require("./queryUtil");
 
 const QUESTIONS = {
+	// Instead of writing these twice, pass CONST string vars as keys.
 	KEYS: {
 		VIEW_EMPL: "View Employees",
 		ADD_EMPL: "Add Employee",
@@ -16,12 +17,14 @@ const QUESTIONS = {
 		DEPT_BUDG: "Department Budget",
 		QUIT: "Quit"
 	},
+	// Menu selection question.
 	menu: [{
 		type: "list",
 		choices: () => Object.values(QUESTIONS.KEYS),
 	//	pageSize: 13,
 		name: "selection"
 	}],
+	// New employee questions.
 	newEmpl: [{
 		type: "input",
 		message: "Employee first name:",
@@ -44,6 +47,7 @@ const QUESTIONS = {
 		choices: database.getMan,
 		name: "emplMan"
 	}],
+	// Change employee's role.
 	updateEmpl: [{
 		type: "list",
 		message: "Update which employee:",
@@ -56,6 +60,7 @@ const QUESTIONS = {
 		choices: database.getRoles,
 		name: "updateRole"
 	}],
+	// Change employee's manager.
 	updateMan: [{
 		type: "list",
 		message: "Update which employee:",
@@ -68,6 +73,7 @@ const QUESTIONS = {
 		choices: database.getMan,
 		name: "updateMan"
 	}],
+	// Create new role.
 	newRole: [{
 		type: "input",
 		message: "Name of role:",
@@ -85,29 +91,34 @@ const QUESTIONS = {
 		choices: database.getDepts,
 		name: "roleDept"
 	}],
+	// Create new department.
 	newDept: [{
 		type: "input",
 		message: "Name of department:",
 		name: "deptName"
 	}],
+	// Delete department.
 	delDept: [{
 		type: "list",
 		message: "Department to delete:",
 		choices: database.getDepts,
 		name: "id"
 	}],
+	// Delete role.
 	delRole: [{
 		type: "list",
 		message: "Role to delete:",
 		choices: database.getRoles,
 		name: "id"
 	}],
+	// Delete employee.
 	delEmpl: [{
 		type: "list",
 		message: "Employee to delete:",
 		choices: database.getEmpls,
 		name: "id"
 	}],
+	// View department budget.
 	deptBudg: [{
 		type: "list",
 		message: "Department's budget to view:",
