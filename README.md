@@ -54,7 +54,7 @@ node index.js
 
 You will be presented with a dozen options to manage your business. View Employees, Roles, and Departments are self-explanatory. Add Employee, Role, and Department will prompt you for details before creating entries in the respective field. Update Employee's Role and Manager will change that person's job position and who they report to. Delete Employee, Role, and Department will remove those entries from the database. Be warned: roles of a deleted department, and employees of a deleted role, will also be deleted.
 
-[You may also view a video demo here]()
+[You may also view a video demo here](https://watch.screencastify.com/v/4v21pWV5S4tteTATNEAp)
 
 ## Contributors
 - Axel Kern, main author
