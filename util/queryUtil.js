@@ -24,8 +24,7 @@ const database = {
 		salary \
 		FROM roles JOIN departments ON department_id = departments.id \
 		ORDER BY departments.name ASC, title ASC"),
-	getEmpls: (exception=null) => {
-		return query("SELECT \
+	getEmpls: () => query("SELECT \
 			E1.id AS value, \
 			CONCAT(E1.last_name, \", \", E1.first_name) AS name, \
 			title, \
@@ -36,14 +35,7 @@ const database = {
 			LEFT JOIN employees E2 ON E1.manager_id = E2.id \
 			INNER JOIN roles ON E1.role_id = roles.id \
 			INNER JOIN departments ON department_id = departments.id \
-			ORDER BY E1.last_name ASC")
-		.then(results => {
-			if (exception != null) {
-				results.splice(exception.id, 1);
-				return results.concat([{id: 0, name: null}], results);
-			} else return results;
-		})
-	},
+			ORDER BY E1.last_name ASC"),
 	getMan: () => {
 		return query("SELECT id AS value, \
 			CONCAT(last_name, \", \", first_name) AS name FROM employees")
@@ -83,7 +75,15 @@ const database = {
 		[empl.emplFirst, empl.emplLast, empl.emplRole, empl.emplMan]),
 	setRole: (empl) => query("UPDATE employees SET role_id = ? WHERE id = ?",
 		[empl.updateRole, empl.updateName]),
-	delEntry: (table, entry) => query("DELETE FROM employees WHERE id = ?", [entry.id]),
+	delEntry: (table, entry) => query(`DELETE FROM ${table} WHERE id = ?`, [entry.id]),
+	deptBudg: (dept) => query("SELECT \
+		departments.id AS ID, \
+		departments.name AS Department, \
+		CONCAT(\"$\", FORMAT(SUM(salary), 0)) AS Budget \
+		FROM employees INNER JOIN roles \
+		ON role_id = roles.id AND roles.department_id = ? \
+		INNER JOIN departments ON departments.id = ? ",
+		[dept.id, dept.id])
 }
 
 module.exports = database;

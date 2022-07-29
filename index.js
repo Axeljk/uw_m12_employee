@@ -41,6 +41,9 @@ function main() {
 			case(QUESTIONS.KEYS.DEL_EMPL):
 				delEntry("delEmpl", "employees");
 				break;
+			case(QUESTIONS.KEYS.DEPT_BUDG):
+				viewBudget();
+				break;
 			default:  // Quit
 				console.log("Exiting...");
 				process.exit(0);
@@ -96,6 +99,14 @@ function addDept() {
 function delEntry(method, table) {
 	inquirer.prompt(QUESTIONS[method])
 	.then(results => database.delEntry(table, results))
+	.then(main);
+}
+
+function viewBudget() {
+	inquirer.prompt(QUESTIONS.deptBudg)
+	.then(results => database.deptBudg(results))
+	.then(table => "\n\t" + tables.getTable(table).slice(0, -1).replaceAll("\n", "\n\t"))
+	.then(console.log)
 	.then(main);
 }
 

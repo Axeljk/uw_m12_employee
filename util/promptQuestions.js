@@ -12,6 +12,7 @@ const QUESTIONS = {
 		DEL_DEPT: "Delete Department",
 		DEL_ROLE: "Delete Role",
 		DEL_EMPL: "Delete Employee",
+		DEPT_BUDG: "Department Budget",
 		QUIT: "Quit"
 	},
 	menu: [{
@@ -91,6 +92,12 @@ const QUESTIONS = {
 		type: "list",
 		message: "Employee to delete:",
 		choices: database.getEmpls,
+		name: "id"
+	}],
+	deptBudg: [{
+		type: "list",
+		message: "Department's budget to view:",
+		choices: database.getDepts,
 		name: "id"
 	}]
 };
