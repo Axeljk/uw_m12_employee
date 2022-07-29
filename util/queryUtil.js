@@ -13,6 +13,9 @@ const db = mysql.createConnection({
 const query = util.promisify(db.query).bind(db);
 
 const database = {
+	getEmplSize: () => query("SELECT COUNT(id) AS length FROM employees"),
+	getRoleSize: () => query("SELECT COUNT(id) AS length FROM roles"),
+	getdeptSize: () => query("SELECT COUNT(id) AS length FROM departments"),
 	getDepts: () => query("SELECT id AS value, name FROM departments"),
 	getRoles: () => query("SELECT \
 		roles.id AS value, \
@@ -40,6 +43,14 @@ const database = {
 				return results.concat([{id: 0, name: null}], results);
 			} else return results;
 		})
+	},
+	getMan: () => {
+		return query("SELECT id AS value, \
+			CONCAT(last_name, \", \", first_name) AS name FROM employees")
+		.then(results => {
+			results.unshift({value: null, name: "[---N/A---]"})
+			return results;
+		});
 	},
 	displayDepts: () => query("SELECT id AS ID, name AS Name FROM departments"),
 	displayRoles: () => query("SELECT \
@@ -69,7 +80,9 @@ const database = {
 		[role.roleName, role.roleSalary, role.roleDept]),
 	addEmpl: (empl) => query("INSERT INTO employees  \
 		(first_name, last_name, role_id, manager_id) VALUES	(?, ?, ?, ?)",
-		[empl.emplFirst, empl.emplLast, empl.emplRole, empl.emplMan])
+		[empl.emplFirst, empl.emplLast, empl.emplRole, empl.emplMan]),
+	setRole: (empl) => query("UPDATE employees SET role_id = ? WHERE id = ?",
+		[empl.updateRole, empl.updateName])
 }
 
 module.exports = database;
