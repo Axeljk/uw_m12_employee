@@ -2,7 +2,7 @@ INSERT INTO departments (name)
 VALUES	("Marketing"),
 		("Finance"),
 		("Operations"),
-		("Human Resources"),
+		("H. Resources"),
 		("Info. Tech.");
 
 INSERT INTO roles (title, salary, department_id)
