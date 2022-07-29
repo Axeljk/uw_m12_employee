@@ -20,6 +20,9 @@ function main() {
 			case (QUESTIONS.KEYS.EMPL_ROLE):
 				updateEmployee();
 				break;
+			case (QUESTIONS.KEYS.EMPL_MAN):
+				updateManager();
+				break;
 			case (QUESTIONS.KEYS.ADD_ROLE):
 				addRole();
 				break;
@@ -67,6 +70,12 @@ function addEmployee() {
 function updateEmployee() {
 	inquirer.prompt(QUESTIONS.updateEmpl)
 	.then(answers => database.setRole(answers))
+	.then(main);
+}
+
+function updateManager() {
+	inquirer.prompt(QUESTIONS.updateMan)
+	.then(answers => database.setMan(answers))
 	.then(main);
 }
 

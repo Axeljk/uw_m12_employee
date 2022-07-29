@@ -75,6 +75,8 @@ const database = {
 		[empl.emplFirst, empl.emplLast, empl.emplRole, empl.emplMan]),
 	setRole: (empl) => query("UPDATE employees SET role_id = ? WHERE id = ?",
 		[empl.updateRole, empl.updateName]),
+	setMan: (empl) => query("UPDATE employees SET manager_id = ? WHERE id = ?",
+		[empl.updateMan, empl.updateName]),
 	delEntry: (table, entry) => query(`DELETE FROM ${table} WHERE id = ?`, [entry.id]),
 	deptBudg: (dept) => query("SELECT \
 		departments.id AS ID, \

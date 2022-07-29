@@ -4,7 +4,8 @@ const QUESTIONS = {
 	KEYS: {
 		VIEW_EMPL: "View Employees",
 		ADD_EMPL: "Add Employee",
-		EMPL_ROLE: "Update Employee Role",
+		EMPL_ROLE: "Update Employee's Role",
+		EMPL_MAN: "Update Employee's Manager",
 		VIEW_ROLE: "View All Roles",
 		ADD_ROLE: "Add Role",
 		VIEW_DEPT: "View All Departments",
@@ -18,6 +19,7 @@ const QUESTIONS = {
 	menu: [{
 		type: "list",
 		choices: () => Object.values(QUESTIONS.KEYS),
+	//	pageSize: 13,
 		name: "selection"
 	}],
 	newEmpl: [{
@@ -53,6 +55,18 @@ const QUESTIONS = {
 		message: "Employee's new role:",
 		choices: database.getRoles,
 		name: "updateRole"
+	}],
+	updateMan: [{
+		type: "list",
+		message: "Update which employee:",
+		choices: database.getEmpls,
+		name: "updateName"
+	},
+	{
+		type: "list",
+		message: "Employee's new manager:",
+		choices: database.getMan,
+		name: "updateMan"
 	}],
 	newRole: [{
 		type: "input",
