@@ -1,6 +1,5 @@
 const tables = require("console.table");
 const inquirer = require("inquirer");
-const mySql = require("mysql2");
 const { KEYWORDS, QUESTIONS } = require("./util/promptQuestions");
 const [KEY_VIEW_EMPL, KEY_ADD_EMPL, KEY_EMPL_ROLE, KEY_VIEW_ROLE, KEY_ADD_ROLE, KEY_VIEW_DEPT, KEY_ADD_DEPT, QUIT] = KEYWORDS;
 const database = require("./util/queryUtil");
@@ -31,33 +30,33 @@ function main() {
 			case (KEY_VIEW_DEPT):
 				viewDepartments();
 				break;
+			case (KEY_ADD_DEPT):
+				addDept();
+				break;
 			default:  // Quit
 				console.log("Exiting...");
 				process.exit(0);
-				break;
 		}
 	});
 }
 
 function viewEmployees() {
-	database.getEmpls()
-	.then(table => "\n" + tables.getTable(table).slice(0, -1))
+	database.displayEmpls()
+	.then(table => "\n\t" + tables.getTable(table).slice(0, -1).replaceAll("\n", "\n\t"))
 	.then(console.log)
 	.then(main);
 }
 
 function addEmployee() {
-	inquirer
-	.prompt(QUESTIONS.newEmpl)
+	inquirer.prompt(QUESTIONS.newEmpl)
 	.then(answers => {
-		console.log("DOING THE ADD EMPLOYEE THING");
+		database.addEmpl(answers);
 		main();
 	});
 }
 
 function updateEmployee() {
-	inquirer
-	.prompt(QUESTIONS.updateEmpl)
+	inquirer.prompt(QUESTIONS.updateEmpl)
 	.then(answers => {
 		console.log("DOING THE UPDATE EMPLOYEE THING");
 		main();
@@ -66,30 +65,27 @@ function updateEmployee() {
 
 function addRole() {
 	inquirer.prompt(QUESTIONS.newRole)
-	.then(answers => {
-		console.log("DOING THE ADD ROLE THING");
-		main();
-	});
+	.then(results => database.addRole(results))
+	.then(main);
 }
 
-/*function viewTable(t) {
-	database.getTable(t)
-	.then(table => "\n" + tables.getTable(table).slice(0, -1))
-	.then(console.log)
-	.then(main);
-}*/
-
-async function viewRoles() {
-	database.getRoles()
-	.then(table => "\n" + tables.getTable(table).slice(0, -1))
+function viewRoles() {
+	database.displayRoles()
+	.then(table => "\n\t" + tables.getTable(table).slice(0, -1).replaceAll("\n", "\n\t"))
 	.then(console.log)
 	.then(main);
 }
 
-async function viewDepartments() {
-	database.getDepts()
-	.then(table => "\n" + tables.getTable(table).slice(0, -1))
+function viewDepartments() {
+	database.displayDepts()
+	.then(table => "\n\t" + tables.getTable(table).slice(0, -1).replaceAll("\n", "\n\t"))
 	.then(console.log)
+	.then(main);
+}
+
+function addDept() {
+	inquirer.prompt(QUESTIONS.newDept)
+	.then(results => database.addDept(results))
 	.then(main);
 }
 
