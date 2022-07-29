@@ -8,9 +8,9 @@ Keep track of your business's departments and workforce with this lightweight an
 ### Design
 The program is divided into three main files:
 
-	- **index.js** which contains the outer skeleton of the program and interacts with the user.
-	- **util/promptQuestions.js** holds the *Questions*' text and other *KEYS* constants.
-	- **util/queryUtil.js** handles interactions with the **database** and is an ungodly mess to view. May god have mercy on the poor soul viewing it.
+- **index.js** which contains the outer skeleton of the program and interacts with the user.
+- **util/promptQuestions.js** holds the *Questions*' text and other *KEYS* constants.
+- **util/queryUtil.js** handles interactions with the **database** and is an ungodly mess to view. May god have mercy on the poor soul viewing it.
 
 <details>
 <summary>Click to view table of contents</summary>
