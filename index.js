@@ -15,10 +15,10 @@ function main() {
 	.then(answers => {
 		switch (answers.selection) {
 			case (QUESTIONS.KEYS.VIEW_EMPL):
-				viewEmployees();
+				viewTable("Empls");
 				break;
 			case (QUESTIONS.KEYS.ADD_EMPL):
-				addEmployee();
+				addEntry("Empl");
 				break;
 			case (QUESTIONS.KEYS.EMPL_ROLE):
 				updateEmployee();
@@ -27,16 +27,16 @@ function main() {
 				updateManager();
 				break;
 			case (QUESTIONS.KEYS.ADD_ROLE):
-				addRole();
+				addEntry("Role");
 				break;
 			case (QUESTIONS.KEYS.VIEW_ROLE):
-				viewRoles();
+				viewTable("Roles");
 				break;
 			case (QUESTIONS.KEYS.VIEW_DEPT):
-				viewDepartments();
+				viewTable("Depts");
 				break;
 			case (QUESTIONS.KEYS.ADD_DEPT):
-				addDept();
+				addEntry("Dept");
 				break;
 			case(QUESTIONS.KEYS.DEL_DEPT):
 				delEntry("delDept", "departments");
@@ -48,7 +48,7 @@ function main() {
 				delEntry("delEmpl", "employees");
 				break;
 			case(QUESTIONS.KEYS.DEPT_BUDG):
-				viewBudget();
+				viewTable("Budg");
 				break;
 			default:  // Quit
 				console.log("Exiting...");
@@ -58,27 +58,27 @@ function main() {
 }
 
 /*
-	View employees:
+	View department, role, or employee (or bonus: budget):
 		Database (from queryUtil) grabs data from the database,
 			and formats it with console.table.
 		Then it is returned here and displayed to the client with console.log.
 		Finally, the main selection menu is called again for further action.
 */
-function viewEmployees() {
-	database.displayEmpls()
+function viewTable(table) {
+	database["display" + table]()
 	.then(console.log)
 	.then(main);
 }
 
 /*
-	Add employee:
+	Add department, role, or employee:
 		Question user for details with promptQuestions.js.
 		Send the data to the database to enter the entry.
 		Finally, the main selection menu is called again for further action.
 */
-function addEmployee() {
-	inquirer.prompt(QUESTIONS.newEmpl)
-	.then(answers => database.addEmpl(answers))
+function addEntry(table) {
+	inquirer.prompt(QUESTIONS["new" + table])
+	.then(answers => database["add" + table](answers))
 	.then(main);
 }
 
@@ -107,56 +107,6 @@ function updateManager() {
 }
 
 /*
-	Add role:
-		Question user for details with promptQuestions.js.
-		Send the data to the database to enter the entry.
-		Finally, the main selection menu is called again for further action.
-*/
-function addRole() {
-	inquirer.prompt(QUESTIONS.newRole)
-	.then(results => database.addRole(results))
-	.then(main);
-}
-
-/*
-	View roles:
-		Database (from queryUtil) grabs data from the database,
-			and formats it with console.table.
-		Then it is returned here and displayed to the client with console.log.
-		Finally, the main selection menu is called again for further action.
-*/
-function viewRoles() {
-	database.displayRoles()
-	.then(console.log)
-	.then(main);
-}
-
-/*
-	View departments:
-		Database (from queryUtil) grabs data from the database,
-			and formats it with console.table.
-		Then it is returned here and displayed to the client with console.log.
-		Finally, the main selection menu is called again for further action.
-*/
-function viewDepartments() {
-	database.displayDepts()
-	.then(console.log)
-	.then(main);
-}
-
-/*
-	Add department:
-		Question user for details with promptQuestions.js.
-		Send the data to the database to enter the entry.
-		Finally, the main selection menu is called again for further action.
-*/
-function addDept() {
-	inquirer.prompt(QUESTIONS.newDept)
-	.then(results => database.addDept(results))
-	.then(main);
-}
-
-/*
 	Delete department, role, or employee:
 		Take name of QUESTIONS method to determine which list to display.
 		Send the results and name of proper table to the database to delete.
@@ -165,20 +115,6 @@ function addDept() {
 function delEntry(method, table) {
 	inquirer.prompt(QUESTIONS[method])
 	.then(results => database.delEntry(table, results))
-	.then(main);
-}
-
-/*
-	View budget:
-		Database (from queryUtil) grabs data from the database,
-			and formats it with console.table.
-		Then it is returned here and displayed to the client with console.log.
-		Finally, the main selection menu is called again for further action.
-*/
-function viewBudget() {
-	inquirer.prompt(QUESTIONS.deptBudg)
-	.then(results => database.deptBudg(results))
-	.then(console.log)
 	.then(main);
 }
 
