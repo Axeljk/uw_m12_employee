@@ -49,18 +49,14 @@ function viewEmployees() {
 
 function addEmployee() {
 	inquirer.prompt(QUESTIONS.newEmpl)
-	.then(answers => {
-		database.addEmpl(answers);
-		main();
-	});
+	.then(answers => database.addEmpl(answers))
+	.then(main);
 }
 
 function updateEmployee() {
 	inquirer.prompt(QUESTIONS.updateEmpl)
-	.then(answers => {
-		console.log("DOING THE UPDATE EMPLOYEE THING");
-		main();
-	});
+	.then(answers => database.setRole(answers))
+	.then(main);
 }
 
 function addRole() {
