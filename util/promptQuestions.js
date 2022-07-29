@@ -1,28 +1,22 @@
-const KEYWORDS = ["View Employees", "Add Employee", "Update Employee Role", "View All Roles", "Add Role", "View All Departments", "Add Department", "Quit"];
-const [KEY_VIEW_EMPL, KEY_ADD_EMPL, KEY_EMPL_ROLE, KEY_VIEW_ROLE, KEY_ADD_ROLE, KEY_VIEW_DEPT, KEY_ADD_DEPT, QUIT] = KEYWORDS;
 const database = require("./queryUtil");
 
 const QUESTIONS = {
+	KEYS: {
+		VIEW_EMPL: "View Employees",
+		ADD_EMPL: "Add Employee",
+		EMPL_ROLE: "Update Employee Role",
+		VIEW_ROLE: "View All Roles",
+		ADD_ROLE: "Add Role",
+		VIEW_DEPT: "View All Departments",
+		ADD_DEPT: "Add Department",
+		DEL_DEPT: "Delete Department",
+		DEL_ROLE: "Delete Role",
+		DEL_EMPL: "Delete Employee",
+		QUIT: "Quit"
+	},
 	menu: [{
 		type: "list",
-		choices: () => {
-			let options = [KEY_ADD_DEPT, QUIT];
-
-//			if (DEPT.length > 0) {
-				options.unshift(KEY_VIEW_DEPT);
-				options.unshift(KEY_ADD_ROLE);
-//			}
-//			if (ROLE.length > 0)
-				options.unshift(KEY_VIEW_ROLE);
-//			if (ROLE.length > 0 && EMPL.length > 0)
-				options.unshift(KEY_EMPL_ROLE);
-//			if (DEPT.length > 0 && ROLE.length > 0 && EMPL.length > 0)
-				options.unshift(KEY_ADD_EMPL);
-//			if (EMPL.length > 0)
-				options.unshift(KEY_VIEW_EMPL);
-
-			return options;
-		},
+		choices: () => Object.values(QUESTIONS.KEYS),
 		name: "selection"
 	}],
 	newEmpl: [{
@@ -44,13 +38,13 @@ const QUESTIONS = {
 	{
 		type: "list",
 		message: "Employee's manager:",
-		choices: database.getEmployees,
+		choices: database.getMan,
 		name: "emplMan"
 	}],
 	updateEmpl: [{
 		type: "list",
 		message: "Update which employee:",
-		choices: database.getEmployees,
+		choices: database.getEmpls,
 		name: "updateName"
 	},
 	{
@@ -80,7 +74,25 @@ const QUESTIONS = {
 		type: "input",
 		message: "Name of department:",
 		name: "deptName"
+	}],
+	delDept: [{
+		type: "list",
+		message: "Department to delete:",
+		choices: database.getDepts,
+		name: "id"
+	}],
+	delRole: [{
+		type: "list",
+		message: "Role to delete:",
+		choices: database.getRoles,
+		name: "id"
+	}],
+	delEmpl: [{
+		type: "list",
+		message: "Employee to delete:",
+		choices: database.getEmpls,
+		name: "id"
 	}]
 };
 
-module.exports = { KEYWORDS, QUESTIONS };
+module.exports = QUESTIONS;

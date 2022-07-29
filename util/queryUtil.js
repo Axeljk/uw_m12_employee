@@ -82,7 +82,8 @@ const database = {
 		(first_name, last_name, role_id, manager_id) VALUES	(?, ?, ?, ?)",
 		[empl.emplFirst, empl.emplLast, empl.emplRole, empl.emplMan]),
 	setRole: (empl) => query("UPDATE employees SET role_id = ? WHERE id = ?",
-		[empl.updateRole, empl.updateName])
+		[empl.updateRole, empl.updateName]),
+	delEntry: (table, entry) => query("DELETE FROM employees WHERE id = ?", [entry.id]),
 }
 
 module.exports = database;
